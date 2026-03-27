@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Design Tools Comparison 2026 — HUNGRY</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Poppins', 'Manrope', 'Inter', sans-serif;
+    background: #f4f4f4;
+    color: #3d4853;
+    min-height: 100vh;
+  }
+
+  /* ── Top gradient bar ── */
+  .brand-bar {
+    height: 6px;
+    background: linear-gradient(90deg, #fe5f52, #ee356c);
+  }
+
+  /* ── Page header ── */
+  .page-header {
+    background: #ffffff;
+    padding: 28px 36px 24px;
+    border-bottom: 1px solid #ebebeb;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  /* HUNGRY logo — cutting board icon + wordmark */
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+  }
+  .logo-wordmark {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    background: linear-gradient(90deg, #fe5f52, #ee356c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+
+  .header-divider {
+    width: 1px;
+    height: 32px;
+    background: #e0e0e0;
+  }
+
+  .header-text h1 {
+    font-size: 17px;
+    font-weight: 800;
+    color: #3d4853;
+    line-height: 1.2;
+  }
+  .header-text p {
+    font-size: 12px;
+    font-weight: 400;
+    color: #8a8a8a;
+    margin-top: 3px;
+  }
+
+  /* ── Main content wrap ── */
+  .wrap {
+    padding: 28px 36px 48px;
+  }
+
+  /* ── Filter buttons ── */
+  .filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .filter-btn {
+    font-family: 'Poppins', 'Manrope', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 99px;
+    border: 1.5px solid #ddd;
+    background: #ffffff;
+    color: #8a8a8a;
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+  .filter-btn:hover {
+    border-color: #fe5f52;
+    color: #fe5f52;
+  }
+  .filter-btn.active {
+    background: linear-gradient(90deg, #fe5f52, #ee356c);
+    border-color: transparent;
+    color: #ffffff;
+  }
+
+  /* ── Table container ── */
+  .tbl-wrap {
+    overflow-x: auto;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(61, 72, 83, 0.08);
+    background: #ffffff;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  /* ── Column widths ── */
+  col.col-row  { width: 130px; }
+  col.col-figma { width: 155px; }
+  col.col-paper { width: 148px; }
+  col.col-stitch { width: 155px; }
+  col.col-pencil { width: 150px; }
+
+  /* ── Header row ── */
+  thead tr {
+    background: linear-gradient(90deg, #fe5f52, #ee356c);
+  }
+  th {
+    padding: 14px 14px;
+    text-align: left;
+    vertical-align: middle;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: transparent; /* let gradient show */
+  }
+  /* Sticky first column in header */
+  th:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 3;
+    background: #fe5f52; /* fallback solid for sticky overlap */
+  }
+
+  .tool-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.3;
+  }
+  .tool-sub {
+    font-size: 10px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.75);
+    margin-top: 2px;
+  }
+
+  /* ── Body cells ── */
+  td {
+    padding: 11px 14px;
+    font-size: 12.5px;
+    font-weight: 400;
+    color: #3d4853;
+    line-height: 1.5;
+    vertical-align: top;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  tr:last-child td { border-bottom: none; }
+
+  /* Row label (first column) */
+  td:first-child {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #8a8a8a;
+    text-transform: uppercase;
+    background: #fafafa;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    border-right: 1px solid #f0f0f0;
+  }
+
+  /* Row hover */
+  tbody tr:hover td { background: #fef8f7; }
+  tbody tr:hover td:first-child { background: #f4f4f4; }
+
+  /* ── Pills ── */
+  .pill {
+    display: inline-block;
+    font-family: 'Poppins', sans-serif;
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 2px 9px;
+    border-radius: 99px;
+    white-space: nowrap;
+    letter-spacing: 0.01em;
+  }
+
+  /* Yes → gradient-tinted */
+  .p-yes {
+    background: linear-gradient(90deg, rgba(254,95,82,0.12), rgba(238,53,108,0.12));
+    color: #c7213e;
+  }
+
+  /* No → neutral grey */
+  .p-no {
+    background: #f0f0f0;
+    color: #8a8a8a;
+  }
+
+  /* Partial → warm orange tint */
+  .p-partial {
+    background: rgba(254, 95, 82, 0.1);
+    color: #c44e3a;
+  }
+
+  /* Hot / Featured → full gradient */
+  .p-hot {
+    background: linear-gradient(90deg, #fe5f52, #ee356c);
+    color: #ffffff;
+  }
+
+  /* Free → dolphin blue tint */
+  .p-free {
+    background: rgba(61, 72, 83, 0.1);
+    color: #3d4853;
+  }
+
+  .hidden { display: none; }
+
+  /* ── Footer ── */
+  .page-footer {
+    margin-top: 24px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #c0c0c0;
+    text-align: right;
+  }
+  .page-footer span {
+    background: linear-gradient(90deg, #fe5f52, #ee356c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+  }
+</style>
+</head>
+<body>
+
+<div class="brand-bar"></div>
+
+<!-- Page header with logo -->
+<header class="page-header">
+  <a class="logo" href="#">
+    <!-- Cutting board icon (inline SVG) -->
+    <svg class="logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="lg" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#fe5f52"/>
+          <stop offset="100%" stop-color="#ee356c"/>
+        </linearGradient>
+      </defs>
+      <!-- Board body -->
+      <rect x="3" y="7" width="24" height="22" rx="3.5" fill="url(#lg)"/>
+      <!-- Handle -->
+      <rect x="27" y="14" width="7" height="8" rx="2" fill="url(#lg)"/>
+      <circle cx="33" cy="18" r="1.5" fill="white" opacity="0.6"/>
+      <!-- H letterform -->
+      <rect x="9" y="13" width="2.5" height="10" rx="1" fill="white"/>
+      <rect x="16.5" y="13" width="2.5" height="10" rx="1" fill="white"/>
+      <rect x="9" y="17" width="10" height="2.5" rx="1" fill="white"/>
+    </svg>
+    <span class="logo-wordmark">HUNGRY</span>
+  </a>
+  <div class="header-divider"></div>
+  <div class="header-text">
+    <h1>AI Design Tools Comparison</h1>
+    <p>Figma MCP · Paper · Google Stitch · Pencil &nbsp;·&nbsp; March 2026</p>
+  </div>
+</header>
+
+<!-- Main content -->
+<div class="wrap">
+
+  <!-- Filter buttons -->
+  <div class="filters" id="filters">
+    <button class="filter-btn active" data-cat="all" onclick="filter('all')">All rows</button>
+    <button class="filter-btn" data-cat="overview" onclick="filter('overview')">Overview</button>
+    <button class="filter-btn" data-cat="canvas" onclick="filter('canvas')">Canvas &amp; code</button>
+    <button class="filter-btn" data-cat="ai" onclick="filter('ai')">AI &amp; MCP</button>
+    <button class="filter-btn" data-cat="workflow" onclick="filter('workflow')">Workflow</button>
+    <button class="filter-btn" data-cat="pricing" onclick="filter('pricing')">Pricing</button>
+  </div>
+
+  <!-- Table -->
+  <div class="tbl-wrap">
+    <table>
+      <colgroup>
+        <col class="col-row">
+        <col class="col-figma">
+        <col class="col-paper">
+        <col class="col-stitch">
+        <col class="col-pencil">
+      </colgroup>
+      <thead>
+        <tr>
+          <th></th>
+          <th><div class="tool-name">Figma MCP</div><div class="tool-sub">figma.com</div></th>
+          <th><div class="tool-name">Paper</div><div class="tool-sub">paper.design</div></th>
+          <th><div class="tool-name">Google Stitch</div><div class="tool-sub">stitch.withgoogle.com</div></th>
+          <th><div class="tool-name">Pencil</div><div class="tool-sub">pencil.dev</div></th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr data-cat="overview">
+          <td>Core idea</td>
+          <td>AI agents write to your existing Figma design system</td>
+          <td>Code-native canvas (HTML/CSS) with full bidirectional MCP</td>
+          <td>Natural language → high-fidelity UI, prototype, and code</td>
+          <td>Design canvas that lives inside your IDE, backed by Git</td>
+        </tr>
+
+        <tr data-cat="overview">
+          <td>Who it's for</td>
+          <td>Design teams with established Figma systems</td>
+          <td>Design engineers &amp; solo builders</td>
+          <td>Anyone — designers, PMs, founders, developers</td>
+          <td>Developers &amp; design engineers who live in VS Code / Cursor</td>
+        </tr>
+
+        <tr data-cat="overview">
+          <td>Launched</td>
+          <td>MCP beta: Mar 2026</td>
+          <td>Mar 2025 (MCP: Mar 2026)</td>
+          <td>May 2025 (big update: Mar 2026)</td>
+          <td>Early 2026</td>
+        </tr>
+
+        <tr data-cat="overview">
+          <td>Maturity</td>
+          <td><span class="pill p-yes">Mature product</span></td>
+          <td><span class="pill p-partial">Early, fast-moving</span></td>
+          <td><span class="pill p-partial">Labs / beta</span></td>
+          <td><span class="pill p-partial">Early access</span></td>
+        </tr>
+
+        <tr data-cat="canvas">
+          <td>Canvas type</td>
+          <td>Proprietary node tree (SVG-based)</td>
+          <td>HTML + CSS native canvas</td>
+          <td>Infinite AI canvas (proprietary)</td>
+          <td>Vector canvas inside IDE (.pen files = JSON)</td>
+        </tr>
+
+        <tr data-cat="canvas">
+          <td>Design → code accuracy</td>
+          <td><span class="pill p-partial">Translation needed</span> SVG → web; some styling loss</td>
+          <td><span class="pill p-yes">No translation</span> Canvas IS the code</td>
+          <td><span class="pill p-partial">Good for scaffolding</span> HTML/CSS out</td>
+          <td><span class="pill p-yes">Direct</span> 4–8px drift in complex layouts</td>
+        </tr>
+
+        <tr data-cat="canvas">
+          <td>Code output</td>
+          <td>Via Code Connect (React, etc.)</td>
+          <td>JSX, Tailwind, HTML/CSS</td>
+          <td>HTML/CSS (React coming)</td>
+          <td>React, HTML, CSS</td>
+        </tr>
+
+        <tr data-cat="canvas">
+          <td>Figma import</td>
+          <td><span class="pill p-yes">Native</span></td>
+          <td><span class="pill p-yes">Via MCP sync</span></td>
+          <td><span class="pill p-no">Not supported</span></td>
+          <td><span class="pill p-yes">Copy-paste from Figma</span></td>
+        </tr>
+
+        <tr data-cat="canvas">
+          <td>Version control</td>
+          <td>Figma version history</td>
+          <td>Not Git-native</td>
+          <td>Not Git-native</td>
+          <td><span class="pill p-hot">Git-native</span> .pen files in your repo</td>
+        </tr>
+
+        <tr data-cat="ai">
+          <td>MCP support</td>
+          <td><span class="pill p-yes">Yes</span> Remote server</td>
+          <td><span class="pill p-yes">Yes</span> 24 tools, local server</td>
+          <td><span class="pill p-yes">Yes</span> MCP export</td>
+          <td><span class="pill p-yes">Yes</span> Context provider via MCP</td>
+        </tr>
+
+        <tr data-cat="ai">
+          <td>Read design</td>
+          <td><span class="pill p-yes">Yes</span></td>
+          <td><span class="pill p-yes">Yes</span></td>
+          <td><span class="pill p-partial">Limited</span></td>
+          <td><span class="pill p-yes">Yes</span></td>
+        </tr>
+
+        <tr data-cat="ai">
+          <td>Write to canvas via AI</td>
+          <td><span class="pill p-yes">Yes</span> New in Mar 2026</td>
+          <td><span class="pill p-yes">Yes</span> Core feature</td>
+          <td><span class="pill p-yes">Yes</span> Core feature</td>
+          <td><span class="pill p-yes">Yes</span> Core feature</td>
+        </tr>
+
+        <tr data-cat="ai">
+          <td>AI model</td>
+          <td>Any MCP client (Claude, Codex…)</td>
+          <td>Any MCP client (Claude, Cursor…)</td>
+          <td>Gemini 2.5 Flash / Pro</td>
+          <td>Claude Code (required)</td>
+        </tr>
+
+        <tr data-cat="ai">
+          <td>Skills / agent guidance</td>
+          <td><span class="pill p-yes">Yes</span> Markdown skill files</td>
+          <td><span class="pill p-no">Not yet</span></td>
+          <td><span class="pill p-partial">DESIGN.md</span> Early</td>
+          <td><span class="pill p-no">Not yet</span></td>
+        </tr>
+
+        <tr data-cat="ai">
+          <td>Voice input</td>
+          <td><span class="pill p-no">No</span></td>
+          <td><span class="pill p-no">No</span></td>
+          <td><span class="pill p-hot">Yes</span> Voice Canvas</td>
+          <td><span class="pill p-no">No</span></td>
+        </tr>
+
+        <tr data-cat="workflow">
+          <td>Multi-screen / prototype</td>
+          <td><span class="pill p-yes">Yes</span> Full prototyping</td>
+          <td><span class="pill p-partial">Basic</span></td>
+          <td><span class="pill p-yes">Yes</span> Up to 5 screens + flows</td>
+          <td><span class="pill p-partial">Manual</span></td>
+        </tr>
+
+        <tr data-cat="workflow">
+          <td>Design system support</td>
+          <td><span class="pill p-yes">Strong</span> Tokens, variants, Code Connect</td>
+          <td><span class="pill p-partial">Growing</span> Import via MCP</td>
+          <td><span class="pill p-partial">Basic</span> DESIGN.md, buggy</td>
+          <td><span class="pill p-partial">Basic</span> Component reuse</td>
+        </tr>
+
+        <tr data-cat="workflow">
+          <td>Collaboration</td>
+          <td><span class="pill p-yes">Best-in-class</span></td>
+          <td><span class="pill p-partial">Limited</span></td>
+          <td><span class="pill p-partial">Sharing via link</span></td>
+          <td><span class="pill p-partial">Via Git</span></td>
+        </tr>
+
+        <tr data-cat="workflow">
+          <td>GPU shaders / visual FX</td>
+          <td><span class="pill p-no">Standard only</span></td>
+          <td><span class="pill p-hot">Unique</span> Liquid metal, halftone, mesh…</td>
+          <td><span class="pill p-no">No</span></td>
+          <td><span class="pill p-no">No</span></td>
+        </tr>
+
+        <tr data-cat="workflow">
+          <td>Best phase</td>
+          <td>Refinement &amp; handoff</td>
+          <td>Exploration &amp; engineering</td>
+          <td>Ideation &amp; early exploration</td>
+          <td>Design-to-code shipping</td>
+        </tr>
+
+        <tr data-cat="pricing">
+          <td>Pricing</td>
+          <td>Free beta now; usage-based later. Figma plan required.</td>
+          <td>Free tier (100 MCP calls/wk); Pro $16–20/mo</td>
+          <td><span class="pill p-free">Fully free</span> Google account only</td>
+          <td><span class="pill p-free">Free</span> + Claude Code ($20/mo)</td>
+        </tr>
+
+        <tr data-cat="pricing">
+          <td>Generation limits</td>
+          <td>Rate limits TBD</td>
+          <td>Free: 100/wk · Pro: 1M/wk</td>
+          <td>Flash: 350/mo · Pro: 200/mo</td>
+          <td>No stated limit (Claude API limits apply)</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Footer -->
+  <div class="page-footer">
+    2026 &nbsp;·&nbsp; <span>HUNGRY</span> &nbsp;·&nbsp; tryhungry.com
+  </div>
+
+</div>
+
+<script>
+function filter(cat) {
+  document.querySelectorAll('.filter-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.cat === cat)
+  );
+  document.querySelectorAll('tbody tr').forEach(r => {
+    r.classList.toggle('hidden', cat !== 'all' && r.dataset.cat !== cat);
+  });
+}
+</script>
+</body>
+</html>
